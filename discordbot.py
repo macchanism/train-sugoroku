@@ -22,7 +22,7 @@ async def cmd(
 ):
     # crrsta, line, boundに整合性があるか
     if not railroad.railroad_tool.is_station_in_line(crrsta, line):
-        await ctx.respond(f'Error!')
+        await ctx.respond(f'Error! There is not {crrsta} in {line}.')
         return
 
     # サイコロを振る
@@ -31,10 +31,10 @@ async def cmd(
     # 出目から結果をサーチ
     s = railroad.railroad_tool.next_stop(crrsta, line, bound, i)
     if s == -1:
-        await ctx.respond(f'Error!')
+        await ctx.respond(f'Error! {line} can not be used.')
         return
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Line: {line}, Bound: {bound}, Step: {i}, Next Stop: {s}')
+    await ctx.respond(f'Current Station: {crrsta}, Line: {line}, Bound: {bound}, Step: {i} ---> Next Stop: {s}')
 
 
 bot.run(config.TOKEN)
