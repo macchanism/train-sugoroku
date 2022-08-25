@@ -2,7 +2,7 @@ from railroad import jb, jc, je, jk, js, jy
 
 
 def is_station_in_line(cs, l):
-    if l == "総武線(各駅停車)":
+    if l == "総武線・中央線(各駅停車)":
         return cs in jb.JB
     elif l == "中央線(快速)":
         return cs in jc.JC_rapid
@@ -33,7 +33,7 @@ def is_station_in_line(cs, l):
 
 def next_stop(crr, l, b, i):
     ret = -1
-    if l == "総武線(各駅停車)":
+    if l == "総武線・中央線(各駅停車)":
         ret = jb.JB_res(crr, b, i)
     elif l == "中央線(快速)":
         ret = jc.JC_rapid_res(crr, b, i)
