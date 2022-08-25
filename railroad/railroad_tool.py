@@ -37,9 +37,15 @@ def next_stop(crr, l, b, i):
     elif l == "中央線(通勤特快)":
         return jc.JC_commuterspecialrapid_res(crr, b, i)
     elif l == "京葉線(各駅停車)":
-        return je.JE_res(crr, b, i)
+        ret = je.JE_res(crr, b, i)
+        if ret == "葛西臨海公園":
+            ret += " (Goal!!!)"
+        return ret
     elif l == "京葉線(快速・通勤快速)":
-        return je.JE_rapid_res(crr, b, i)
+        ret = je.JE_rapid_res(crr, b, i)
+        if ret == "葛西臨海公園":
+            ret += " (Goal!!!)"
+        return ret
     elif l == "京浜東北線(各駅停車)":
         return jk.JK_res(crr, b, i)
     elif l == "京浜東北線(快速)":
