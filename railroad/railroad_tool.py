@@ -1,8 +1,10 @@
-from railroad import jc, je, jk, jy
+from railroad import jb, jc, je, jk, jy
 
 
 def is_station_in_line(cs, l):
-    if l == "中央線(快速)":
+    if l == "総武線(各駅停車)":
+        return cs in jb.JB
+    elif l == "中央線(快速)":
         return cs in jc.JC_rapid
     elif l == "中央線(通勤快速)":
         return cs in jc.JC_commuterrapid
@@ -24,7 +26,9 @@ def is_station_in_line(cs, l):
     return False
 
 def next_stop(crr, l, b, i):
-    if l == "中央線(快速)":
+    if l == "総武線(各駅停車)":
+        return jb.JB_res(crr, b, i)
+    elif l == "中央線(快速)":
         return jc.JC_rapid_res(crr, b, i)
     elif l == "中央線(通勤快速)":
         return jc.JC_commuterrapid_res(crr, b, i)
