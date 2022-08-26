@@ -2,15 +2,15 @@ from railroad import jb, jc, je, jk, js, jy
 
 
 def is_station_in_line(cs, l):
-    if l == "総武線・中央線(各駅停車)":
+    if l == "総武線各停・中央線各停":
         return cs in jb.JB
-    elif l == "中央線(快速)":
+    elif l == "中央線快速(快速)":
         return cs in jc.JC_rapid
-    elif l == "中央線(通勤快速)":
+    elif l == "中央線快速(通勤快速)":
         return cs in jc.JC_commuterrapid
-    elif l == "中央線(中央・青海特快)":
+    elif l == "中央線快速(中央・青海特快)":
         return cs in jc.JC_specialrapid
-    elif l == "中央線(通勤特快)":
+    elif l == "中央線快速(通勤特快)":
         return cs in jc.JC_commuterspecialrapid
     elif l == "京葉線(各駅停車)":
         return cs in je.JE
@@ -33,15 +33,15 @@ def is_station_in_line(cs, l):
 
 def next_stop(crr, l, b, i):
     ret = -1
-    if l == "総武線・中央線(各駅停車)":
+    if l == "総武線各停・中央線各停":
         ret = jb.JB_res(crr, b, i)
-    elif l == "中央線(快速)":
+    elif l == "中央線快速(快速)":
         ret = jc.JC_rapid_res(crr, b, i)
-    elif l == "中央線(通勤快速)":
+    elif l == "中央線快速(通勤快速)":
         ret = jc.JC_commuterrapid_res(crr, b, i)
-    elif l == "中央線(中央・青海特快)":
+    elif l == "中央線快速(中央・青海特快)":
         ret = jc.JC_specialrapid_res(crr, b, i)
-    elif l == "中央線(通勤特快)":
+    elif l == "中央線快速(通勤特快)":
         ret = jc.JC_commuterspecialrapid_res(crr, b, i)
     elif l == "京葉線(各駅停車)":
         ret = je.JE_res(crr, b, i)
@@ -66,7 +66,5 @@ def next_stop(crr, l, b, i):
         ret += " (Goal!!!)"
     elif ret == crr:
         ret += " (Stay here... Re-choose another train and retry!)"
-
-    return ret
 
     return ret
