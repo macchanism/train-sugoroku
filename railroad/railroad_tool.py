@@ -1,4 +1,4 @@
-from railroad import jb, jc, je, jk, js, jy
+from railroad import jb, jc, je, jk, jo, js, jy
 
 
 def is_station_in_line(cs, l):
@@ -20,6 +20,8 @@ def is_station_in_line(cs, l):
         return cs in jk.JK
     elif l == "京浜東北線(快速)":
         return cs in jk.JK_rapid
+    elif l == "横須賀線・総武線快速":
+        return cs in jo.JO
     elif l == "湘南新宿ライン(宇都宮線・横須賀線直通)(普通・快速)":
         return cs in js.JS_U_JO
     elif l == "湘南新宿ライン(高崎線・東海道線直通)(普通・快速)":
@@ -51,6 +53,8 @@ def next_stop(crr, l, b, i):
         ret = jk.JK_res(crr, b, i)
     elif l == "京浜東北線(快速)":
         ret = jk.JK_rapid_res(crr, b, i)
+    elif l == "横須賀線・総武線快速":
+        ret = jo.JO_res(crr, b, i)
     elif l == "湘南新宿ライン(宇都宮線・横須賀線直通)(普通・快速)":
         ret = js.JS_U_JO_res(crr, b, i)
     elif l == "湘南新宿ライン(高崎線・東海道線直通)(普通・快速)":
