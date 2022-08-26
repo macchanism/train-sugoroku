@@ -1,4 +1,4 @@
-from railroad import ja_twr_so, jb, jc, je, jk, jo, js, jy
+from railroad import ja_twr_so, jb, jc, je, jj_utl, jk, jl, jo, js, jy
 
 
 def is_station_in_line(cs, l):
@@ -36,6 +36,16 @@ def is_station_in_line(cs, l):
         return cs in js.JS_T_JT
     elif l == "湘南新宿ライン(高崎線・東海道線直通)(特別快速)":
         return cs in js.JS_T_JT_specialrapd
+    elif l == "常磐線各駅停車":
+        return cs in jl.JL
+    elif l == "常磐線快速(上野-北千住)(普通・快速)":
+        return cs in jj_utl.JJ
+    elif l == "常磐線快速(上野-北千住)(特別快速)":
+        return cs in jj_utl.JJ_specialrapid
+    elif l == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        return cs in jj_utl.UTL_JJ
+    elif l == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        return cs in jj_utl.UTL_JJ_specialrapid
     elif l == "山手線":
         return cs in jy.JY
 
@@ -77,6 +87,16 @@ def next_stop(crr, l, b, i):
         ret = js.JS_T_JT_res(crr, b, i)
     elif l == "湘南新宿ライン(高崎線・東海道線直通)(特別快速)":
         ret = js.JS_T_JT_specialrapd_res(crr, b, i)
+    elif l == "常磐線各駅停車":
+        ret = jl.JL_res(crr, b, i)
+    elif l == "常磐線快速(上野-北千住)(普通・快速)":
+        ret = jj_utl.JJ_res(crr, b, i)
+    elif l == "常磐線快速(上野-北千住)(特別快速)":
+        ret = jj_utl.JJ_specialrapid_res(crr, b, i)
+    elif l == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        ret = jj_utl.UTL_JJ_res(crr, b, i)
+    elif l == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        ret = jj_utl.UTL_JJ_specialrapid_res(crr, b, i)
     elif l == "山手線" and b == "外回り":
         ret = jy.JY_outer_res(crr, i)
     elif l == "山手線" and b == "内回り":
