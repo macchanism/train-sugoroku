@@ -1,8 +1,16 @@
-from railroad import jb, jc, je, jk, jo, js, jy
+from railroad import ja_twr_so, jb, jc, je, jk, jo, js, jy
 
 
 def is_station_in_line(cs, l):
-    if l == "総武線各停・中央線各停":
+    if l == "埼京線(浮間舟渡-大崎)":
+        return ja_twr_so.JA
+    elif l == "埼京線(りんかい線直通)":
+        return ja_twr_so.JA_TWR
+    elif l == "埼京線(相鉄線直通)":
+        return ja_twr_so.JA_SO
+    elif l == "りんかい線":
+        return ja_twr_so.TWR
+    elif l == "総武線各停・中央線各停":
         return cs in jb.JB
     elif l == "中央線快速(快速)":
         return cs in jc.JC_rapid
@@ -35,7 +43,15 @@ def is_station_in_line(cs, l):
 
 def next_stop(crr, l, b, i):
     ret = -1
-    if l == "総武線各停・中央線各停":
+    if l == "埼京線(浮間舟渡-大崎)":
+        ret = ja_twr_so.JA_res(crr, b, i)
+    elif l == "埼京線(りんかい線直通)":
+        ret = ja_twr_so.JA_TWR_res(crr, b, i)
+    elif l == "埼京線(相鉄線直通)":
+        ret = ja_twr_so.JA_SO_res(crr, b, i)
+    elif l == "りんかい線":
+        ret = ja_twr_so.TWR_res(crr, b, i)
+    elif l == "総武線各停・中央線各停":
         ret = jb.JB_res(crr, b, i)
     elif l == "中央線快速(快速)":
         ret = jc.JC_rapid_res(crr, b, i)
