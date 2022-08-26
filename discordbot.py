@@ -209,6 +209,46 @@ async def jo(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
+async def js(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    typ: Option(str, 'Which type?', choices=railroad.js.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.js.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "宇都宮線・横須賀線直通(普通・快速)":
+        if not (crrsta in railroad.js.JS_U_JO):
+            await ctx.respond(f'Error! There is not {crrsta}')
+            return
+    elif typ == "高崎線・東海道線直通(普通・快速)":
+        if not (crrsta in railroad.js.JS_T_JT):
+            await ctx.respond(f'Error! There is not {crrsta}')
+            return
+    elif typ == "高崎線・東海道線直通(特別快速)":
+        if not (crrsta in railroad.js.JS_T_JT_specialrapd):
+            await ctx.respond(f'Error! There is not {crrsta}')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "宇都宮線・横須賀線直通(普通・快速)":
+        nxtsta = railroad.js.JS_U_JO_res(crrsta, bound, i)
+    elif typ == "高崎線・東海道線直通(普通・快速)":
+        nxtsta = railroad.js.JS_T_JT_res(crrsta, bound, i)
+    elif typ == "高崎線・東海道線直通(特別快速)":
+        nxtsta = railroad.js.JS_T_JT_specialrapd_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jy(
     ctx,
     crrsta: Option(str, 'Current Station?'),
