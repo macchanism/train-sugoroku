@@ -5,7 +5,7 @@ JS_T_JT_specialrapd = ["大崎", "渋谷", "新宿", "池袋", "赤羽"]
 
 
 def endstation(b, p):
-    if b == "赤羽 以北":
+    if b == "赤羽 以北(埼京線以外)":
         return "赤羽"
     elif b == "西大井 以南":
         if p == 1:
