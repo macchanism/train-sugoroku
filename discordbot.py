@@ -34,7 +34,7 @@ async def cmd(
         await ctx.respond(f'Error! {line} can not be used.')
         return
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Line: {line}, Bound: {bound}, Step: {i} ---> Next Stop: {s}')
+    await ctx.respond(f'Current Station: {crrsta}, Line: {line}, Bound: {bound}, Step: **{i}** ---> Next Stop: **{s}**')
 
 
 bot.run(config.TOKEN)
