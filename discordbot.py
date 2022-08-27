@@ -1,3 +1,4 @@
+from secrets import choice
 import discord
 from discord.ext import commands
 from discord.commands import Option
@@ -12,6 +13,27 @@ WALK = True
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
+
+
+# Maintenance
+@bot.slash_command(guild_ids=config.SERVER_IDs)
+async def change_value(
+    ctx,
+    pswd: Option(str, 'PSWD?'),
+    newvalue: Option(str, 'T/F?', choices=["True", "False"])
+):
+    if pswd != config.PSWD:
+        await ctx.respond(f'**Incorrect PSWD...**')
+        return
+    
+    global WALK
+    if newvalue == "True":
+        WALK = True
+    else:
+        WALK = False
+
+    # 出力
+    await ctx.respond(f'**WALK is {WALK}**')
 
 
 # Slash Command
