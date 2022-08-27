@@ -378,6 +378,52 @@ async def js(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
+async def ju(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    typ: Option(str, 'Which type?', choices=railroad.ju.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.ju.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "宇都宮線・高崎線(上野-赤羽)(普通)":
+        if not (crrsta in railroad.ju.JU):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "宇都宮線・高崎線(上野-赤羽)(快速)":
+        if not (crrsta in railroad.ju.JU_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(普通)":
+        if not (crrsta in railroad.ju.UTL_JU):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(快速)":
+        if not (crrsta in railroad.ju.UTL_JU_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "宇都宮線・高崎線(上野-赤羽)(普通)":
+        nxtsta = railroad.ju.JU_res(crrsta, bound, i)
+    elif typ == "宇都宮線・高崎線(上野-赤羽)(快速)":
+        nxtsta = railroad.ju.JU_rapid_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(普通)":
+        nxtsta = railroad.ju.UTL_JU_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(快速)":
+        nxtsta = railroad.ju.UTL_JU_rapid_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jy(
     ctx,
     crrsta: Option(str, 'Current Station?'),
