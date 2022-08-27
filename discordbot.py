@@ -22,7 +22,7 @@ async def cmd(
 ):
     # crrsta, line, boundに整合性があるか
     if not railroad.railroad_tool.is_station_in_line(crrsta, line):
-        await ctx.respond(f'Error! There is not {crrsta} in {line}.')
+        await ctx.respond(f'Error! There is not {crrsta} in this line! in {line}.')
         return
 
     # サイコロを振る
@@ -39,6 +39,64 @@ async def cmd(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
+async def ja(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    typ: Option(str, 'Which type?', choices=railroad.ja.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.ja.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "埼京線(大崎-浮間舟渡)(各駅停車)":
+        if not (crrsta in railroad.ja.JA):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "埼京線(大崎-浮間舟渡)(快速・通勤快速)":
+        if not (crrsta in railroad.ja.JA_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "埼京線(りんかい線直通)(各駅停車)":
+        if not (crrsta in railroad.ja.JA_TWR):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "埼京線(りんかい線直通)(快速・通勤快速)":
+        if not (crrsta in railroad.ja.JA_TWR_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "埼京線(相鉄線直通)(各駅停車)":
+        if not (crrsta in railroad.ja.JA_SO):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "埼京線(相鉄線直通)(快速・通勤快速)":
+        if not (crrsta in railroad.ja.JA_SO_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "埼京線(大崎-浮間舟渡)(各駅停車)":
+        nxtsta = railroad.ja.JA_res(crrsta, bound, i)
+    elif typ == "埼京線(大崎-浮間舟渡)(快速・通勤快速)":
+        nxtsta = railroad.ja.JA_rapid_res(crrsta, bound, i)
+    elif typ == "埼京線(りんかい線直通)(各駅停車)":
+        nxtsta = railroad.ja.JA_TWR_res(crrsta, bound, i)
+    elif typ == "埼京線(りんかい線直通)(快速・通勤快速)":
+        nxtsta = railroad.ja.JA_TWR_rapid_res(crrsta, bound, i)
+    elif typ == "埼京線(相鉄線直通)(各駅停車)":
+        nxtsta = railroad.ja.JA_SO_res(crrsta, bound, i)
+    elif typ == "埼京線(相鉄線直通)(快速・通勤快速)":
+        nxtsta = railroad.ja.JA_SO_rapid_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jb(
     ctx,
     crrsta: Option(str, 'Current Station?'),
@@ -46,7 +104,7 @@ async def jb(
 ):
     # crrsta, line, boundに整合性があるか
     if not (crrsta in railroad.jb.JB):
-        await ctx.respond(f'Error! There is not {crrsta}.')
+        await ctx.respond(f'Error! There is not {crrsta} in this line!.')
         return
 
     # サイコロを振る
@@ -73,19 +131,19 @@ async def jc(
     # crrsta, line, boundに整合性があるか
     if typ == "快速":
         if not (crrsta in railroad.jc.JC_rapid):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
     elif typ == "通勤快速":
         if not (crrsta in railroad.jc.JC_commuterrapid):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
     elif typ == "特別快速":
         if not (crrsta in railroad.jc.JC_specialrapid):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
     elif typ == "通勤特快":
         if not (crrsta in railroad.jc.JC_commuterspecialrapid):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
 
     # サイコロを振る
@@ -119,15 +177,15 @@ async def je(
     # crrsta, line, boundに整合性があるか
     if typ == "各駅停車":
         if not (crrsta in railroad.je.JE):
-            await ctx.respond(f'Error! There is not {crrsta}.')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
     elif typ == "快速":
         if not (crrsta in railroad.je.JE_rapid):
-            await ctx.respond(f'Error! There is not {crrsta}.')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
     elif typ == "通勤快速":
         if not (crrsta in railroad.je.JE_commuterrapid):
-            await ctx.respond(f'Error! There is not {crrsta}.')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
 
     # サイコロを振る
@@ -159,11 +217,11 @@ async def jk(
     # crrsta, line, boundに整合性があるか
     if typ == "各駅停車":
         if not (crrsta in railroad.jk.JK):
-            await ctx.respond(f'Error! There is not {crrsta}.')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
     elif typ == "快速":
         if not (crrsta in railroad.jk.JK_rapid):
-            await ctx.respond(f'Error! There is not {crrsta}.')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
 
     # サイコロを振る
@@ -191,7 +249,7 @@ async def jo(
 ):
     # crrsta, line, boundに整合性があるか
     if not (crrsta in railroad.jo.JO):
-        await ctx.respond(f'Error! There is not {crrsta}.')
+        await ctx.respond(f'Error! There is not {crrsta} in this line!.')
         return
 
     # サイコロを振る
@@ -218,15 +276,15 @@ async def js(
     # crrsta, line, boundに整合性があるか
     if typ == "宇都宮線・横須賀線直通(普通・快速)":
         if not (crrsta in railroad.js.JS_U_JO):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
     elif typ == "高崎線・東海道線直通(普通・快速)":
         if not (crrsta in railroad.js.JS_T_JT):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
     elif typ == "高崎線・東海道線直通(特別快速)":
         if not (crrsta in railroad.js.JS_T_JT_specialrapd):
-            await ctx.respond(f'Error! There is not {crrsta}')
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
             return
 
     # サイコロを振る
@@ -255,25 +313,14 @@ async def jy(
     loop: Option(str, 'Which loop?', choices=railroad.jy.loop_list)
 ):
     # crrsta, line, boundに整合性があるか
-    """
-    if not railroad.railroad_tool.is_station_in_line(crrsta, "JY"):
-        await ctx.respond(f'Error! There is not {crrsta} in JY.')
-        return
-    """
     if not (crrsta in railroad.jy.JY):
-        await ctx.respond(f'Error! There is not {crrsta}')
+        await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
     # サイコロを振る
     i = tool.Dice(5)
 
     # 出目から結果をサーチ
-    """
-    s = railroad.railroad_tool.next_stop(crrsta, "JY", loop, i)
-    if s == -1:
-        await ctx.respond(f'Error! JY can not be used.')
-        return
-    """
     nxtsta = -1
     if loop == "内回り":
         nxtsta = railroad.jy.JY_inner_res(crrsta, i)
@@ -285,6 +332,46 @@ async def jy(
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Loop: {loop}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
+async def twr(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    typ: Option(str, 'Which type?', choices=railroad.twr.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.twr.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "りんかい線":
+        if not (crrsta in railroad.twr.TWR):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "りんかい線(埼京線直通)(各駅停車)":
+        if not (crrsta in railroad.twr.TWR_JA):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "りんかい線(埼京線直通)(快速・通勤快速)":
+        if not (crrsta in railroad.twr.TWR_JA_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "りんかい線":
+        nxtsta = railroad.twr.TWR_res(crrsta, bound, i)
+    elif typ == "りんかい線(埼京線直通)(各駅停車)":
+        nxtsta = railroad.twr.TWR_JA_res(crrsta, bound, i)
+    elif typ == "りんかい線(埼京線直通)(快速・通勤快速)":
+        nxtsta = railroad.twr.TWR_JA_rapid_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
 
 
 bot.run(config.TOKEN)
