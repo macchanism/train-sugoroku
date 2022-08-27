@@ -91,6 +91,9 @@ async def ja(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -116,6 +119,9 @@ async def jb(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -162,6 +168,9 @@ async def jc(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -179,12 +188,8 @@ async def je(
         if not (crrsta in railroad.je.JE):
             await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
-    elif typ == "快速":
+    elif typ == "快速・通勤快速":
         if not (crrsta in railroad.je.JE_rapid):
-            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
-            return
-    elif typ == "通勤快速":
-        if not (crrsta in railroad.je.JE_commuterrapid):
             await ctx.respond(f'Error! There is not {crrsta} in this line!.')
             return
 
@@ -195,13 +200,16 @@ async def je(
     nxtsta = -1
     if typ == "各駅停車":
         nxtsta = railroad.je.JE_res(crrsta, bound, i)
-    elif typ == "快速":
+    elif typ == "快速・通勤快速":
         nxtsta = railroad.je.JE_rapid_res(crrsta, bound, i)
-    elif typ == "通勤快速":
-        nxtsta = railroad.je.JE_commuterrapid_res(crrsta, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == "葛西臨海公園":
+        nxtsta += " (Goal!!!)"
+    elif nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -236,6 +244,9 @@ async def jk(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -282,6 +293,9 @@ async def jj(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -308,6 +322,9 @@ async def jl(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
+
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
 
@@ -332,6 +349,9 @@ async def jo(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -372,6 +392,9 @@ async def js(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -424,6 +447,9 @@ async def jt(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -470,6 +496,9 @@ async def ju(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -498,6 +527,9 @@ async def jy(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Loop: {loop}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
@@ -538,6 +570,9 @@ async def twr(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
 
     # 出力
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
