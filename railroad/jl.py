@@ -1,12 +1,14 @@
 # 常磐線各駅停車(北千住-金町)
 JL = ["北千住", "綾瀬", "亀有", "金町"]
 
+bound_list = ["北千住 以西", "綾瀬", "金町 以東"]
+
 
 def endstation(b):
-    if b == "金町 以東":
-        return "金町"
-    elif b == "北千住 以西":
+    if b == "北千住 以西":
         return "北千住"
+    elif b == "金町 以東":
+        return "金町"
     return b
 
 def JL_res(crr, b, i):

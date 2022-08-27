@@ -242,6 +242,31 @@ async def jk(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
+async def jl(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    bound: Option(str, 'Bound for?', choices=railroad.jl.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if not (crrsta in railroad.jl.JL):
+        await ctx.respond(f'Error! There is not {crrsta} in this line!.')
+        return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    nxtsta = railroad.jl.JL_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jo(
     ctx,
     crrsta: Option(str, 'Current Station?'),
