@@ -242,6 +242,52 @@ async def jk(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
+async def jj(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    typ: Option(str, 'Which type?', choices=railroad.jj.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.jj.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "常磐線快速(上野-北千住)(普通・快速)":
+        if not (crrsta in railroad.jj.JJ):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "常磐線快速(上野-北千住)(特別快速)":
+        if not (crrsta in railroad.jj.JJ_specialrapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        if not (crrsta in railroad.jj.UTL_JJ):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        if not (crrsta in railroad.jj.UTL_JJ_specialrapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "常磐線快速(上野-北千住)(普通・快速)":
+        nxtsta = railroad.jj.JJ_res(crrsta, bound, i)
+    elif typ == "常磐線快速(上野-北千住)(特別快速)":
+        nxtsta = railroad.jj.JJ_specialrapid_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        nxtsta = railroad.jj.UTL_JJ_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        nxtsta = railroad.jj.UTL_JJ_specialrapid_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jl(
     ctx,
     crrsta: Option(str, 'Current Station?'),
