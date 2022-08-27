@@ -12,36 +12,12 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-"""
-@bot.slash_command(guild_ids=config.SERVER_IDs)
-async def cmd(
-    ctx,
-    crrsta: Option(str, 'Current Station?'),
-    line: Option(str, 'Line?', choices=railroad.env.railroad_list),
-    bound: Option(str, 'Bound for?', choices=railroad.env.bound_list),
-):
-    # crrsta, line, boundに整合性があるか
-    if not railroad.railroad_tool.is_station_in_line(crrsta, line):
-        await ctx.respond(f'Error! There is not {crrsta} in this line! in {line}.')
-        return
 
-    # サイコロを振る
-    i = tool.Dice(5)
-
-    # 出目から結果をサーチ
-    s = railroad.railroad_tool.next_stop(crrsta, line, bound, i)
-    if s == -1:
-        await ctx.respond(f'Error! {line} can not be used.')
-        return
-    # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Line: {line}, Bound: {bound}, Step: **{i}** ---> Next Stop: **{s}**')
-"""
-
-
+# Slash Command
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def ja(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.ja.station_list),
     typ: Option(str, 'Which type?', choices=railroad.ja.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.ja.bound_list)
 ):
@@ -91,7 +67,7 @@ async def ja(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -102,7 +78,7 @@ async def ja(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jb(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.jb.station_list),
     bound: Option(str, 'Bound for?', choices=railroad.jb.bound_list)
 ):
     # crrsta, line, boundに整合性があるか
@@ -119,7 +95,7 @@ async def jb(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -130,7 +106,7 @@ async def jb(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jc(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.jc.station_list),
     typ: Option(str, 'Which type?', choices=railroad.jc.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.jc.bound_list)
 ):
@@ -168,7 +144,7 @@ async def jc(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -179,7 +155,7 @@ async def jc(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def je(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.je.station_list),
     typ: Option(str, 'Which type?', choices=railroad.je.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.je.bound_list)
 ):
@@ -205,7 +181,7 @@ async def je(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == "葛西臨海公園":
         nxtsta += " (Goal!!!)"
     elif nxtsta == crrsta:
@@ -216,46 +192,9 @@ async def je(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
-async def jk(
-    ctx,
-    crrsta: Option(str, 'Current Station?'),
-    typ: Option(str, 'Which type?', choices=railroad.jk.type_list),
-    bound: Option(str, 'Bound for?', choices=railroad.jk.bound_list)
-):
-    # crrsta, line, boundに整合性があるか
-    if typ == "各駅停車":
-        if not (crrsta in railroad.jk.JK):
-            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
-            return
-    elif typ == "快速":
-        if not (crrsta in railroad.jk.JK_rapid):
-            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
-            return
-
-    # サイコロを振る
-    i = tool.Dice(5)
-
-    # 出目から結果をサーチ
-    nxtsta = -1
-    if typ == "各駅停車":
-        nxtsta = railroad.jk.JK_res(crrsta, bound, i)
-    elif typ == "快速":
-        nxtsta = railroad.jk.JK_rapid_res(crrsta, bound, i)
-    if nxtsta == -1:
-        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
-        return
-    
-    if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
-
-    # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
-
-
-@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jj(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.jj.station_list),
     typ: Option(str, 'Which type?', choices=railroad.jj.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.jj.bound_list)
 ):
@@ -293,7 +232,44 @@ async def jj(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
+    if nxtsta == crrsta:
+        nxtsta += " (Stay here... Re-choose another train and retry!)"
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
+async def jk(
+    ctx,
+    crrsta: Option(str, 'Current Station?', choices=railroad.jk.station_list),
+    typ: Option(str, 'Which type?', choices=railroad.jk.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.jk.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "各駅停車":
+        if not (crrsta in railroad.jk.JK):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
+            return
+    elif typ == "快速":
+        if not (crrsta in railroad.jk.JK_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!.')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "各駅停車":
+        nxtsta = railroad.jk.JK_res(crrsta, bound, i)
+    elif typ == "快速":
+        nxtsta = railroad.jk.JK_rapid_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -304,7 +280,7 @@ async def jj(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jl(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.jl.station_list),
     bound: Option(str, 'Bound for?', choices=railroad.jl.bound_list)
 ):
     # crrsta, line, boundに整合性があるか
@@ -332,7 +308,7 @@ async def jl(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jo(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.jo.station_list),
     bound: Option(str, 'Bound for?', choices=railroad.jo.bound_list)
 ):
     # crrsta, line, boundに整合性があるか
@@ -349,7 +325,7 @@ async def jo(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -360,7 +336,7 @@ async def jo(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def js(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.js.station_list),
     typ: Option(str, 'Which type?', choices=railroad.js.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.js.bound_list)
 ):
@@ -392,7 +368,7 @@ async def js(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -403,7 +379,7 @@ async def js(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def jt(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.jt.station_list),
     typ: Option(str, 'Which type?', choices=railroad.jt.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.jt.bound_list)
 ):
@@ -447,7 +423,7 @@ async def jt(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -458,7 +434,7 @@ async def jt(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def ju(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.ju.station_list),
     typ: Option(str, 'Which type?', choices=railroad.ju.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.ju.bound_list)
 ):
@@ -496,7 +472,7 @@ async def ju(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -527,7 +503,7 @@ async def jy(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -538,7 +514,7 @@ async def jy(
 @bot.slash_command(guild_ids=config.SERVER_IDs)
 async def twr(
     ctx,
-    crrsta: Option(str, 'Current Station?'),
+    crrsta: Option(str, 'Current Station?', choices=railroad.twr.station_list),
     typ: Option(str, 'Which type?', choices=railroad.twr.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.twr.bound_list)
 ):
@@ -570,7 +546,7 @@ async def twr(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
-    
+
     if nxtsta == crrsta:
         nxtsta += " (Stay here... Re-choose another train and retry!)"
 
@@ -578,4 +554,5 @@ async def twr(
     await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
 
 
+# Bot Run
 bot.run(config.TOKEN)
