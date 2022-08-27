@@ -378,6 +378,58 @@ async def js(
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
+async def jt(
+    ctx,
+    crrsta: Option(str, 'Current Station?'),
+    typ: Option(str, 'Which type?', choices=railroad.jt.type_list),
+    bound: Option(str, 'Bound for?', choices=railroad.jt.bound_list)
+):
+    # crrsta, line, boundに整合性があるか
+    if typ == "東海道線(東京-品川)":
+        if not (crrsta in railroad.jt.JT):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(普通)":
+        if not (crrsta in railroad.jt.UTL_JT_JU):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(快速)":
+        if not (crrsta in railroad.jt.UTL_JT_JU_rapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        if not (crrsta in railroad.jt.UTL_JT_JJ):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        if not (crrsta in railroad.jt.UTL_JT_JJ_specialrapid):
+            await ctx.respond(f'Error! There is not {crrsta} in this line!')
+            return
+
+    # サイコロを振る
+    i = tool.Dice(5)
+
+    # 出目から結果をサーチ
+    nxtsta = -1
+    if typ == "東海道線(東京-品川)":
+        nxtsta = railroad.jt.JT_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(普通)":
+        nxtsta = railroad.jt.UTL_JT_JU_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(快速)":
+        nxtsta = railroad.jt.UTL_JT_JU_rapid_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        nxtsta = railroad.jt.UTL_JT_JJ_res(crrsta, bound, i)
+    elif typ == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        nxtsta = railroad.jt.UTL_JT_JJ_specialrapid_res(crrsta, bound, i)
+    if nxtsta == -1:
+        await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+        return
+
+    # 出力
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+
+
+@bot.slash_command(guild_ids=config.SERVER_IDs)
 async def ju(
     ctx,
     crrsta: Option(str, 'Current Station?'),
