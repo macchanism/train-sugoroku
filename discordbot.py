@@ -6,6 +6,7 @@ import config
 import tool
 import railroad
 
+WALK = True
 
 # Initial Process
 intents = discord.Intents.default()
@@ -68,11 +69,15 @@ async def ja(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -96,11 +101,15 @@ async def jb(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -145,11 +154,15 @@ async def jc(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -182,13 +195,31 @@ async def je(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # WALK
+    global WALK
+    if WALK:
+        if i in [4, 5]:
+            nxtsta = railroad.je.JE_res(crrsta, bound, 1)
+            if nxtsta == -1:
+                await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+                return
+            nxtsta = "WALK TO " + nxtsta + "!"
+    if "葛西臨海公園" in nxtsta:
+        WALK = False
+
+    # コメント
+    cmnt = ""
     if nxtsta == "葛西臨海公園":
-        nxtsta += " (Goal!!!)"
+        cmnt = "Goal!!!"
+    elif nxtsta == "WALK TO 葛西臨海公園!":
+        cmnt = "Goal!!!"
     elif nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -233,11 +264,15 @@ async def jj(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -270,11 +305,15 @@ async def jk(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -298,11 +337,15 @@ async def jl(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -326,11 +369,15 @@ async def jo(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -369,11 +416,15 @@ async def js(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -424,11 +475,15 @@ async def jt(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -473,11 +528,15 @@ async def ju(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -504,11 +563,15 @@ async def jy(
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Loop: {loop}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Loop: {loop}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 @bot.slash_command(guild_ids=config.SERVER_IDs)
@@ -546,12 +609,26 @@ async def twr(
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
+    
+    # WALK
+    global WALK
+    if WALK:
+        if i == 5:
+            nxtsta = railroad.twr.TWR_res(crrsta, bound, 1)
+            if nxtsta == -1:
+                await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
+                return
+            nxtsta = "WALK TO " + nxtsta + "!"
 
+    # コメント
+    cmnt = ""
     if nxtsta == crrsta:
-        nxtsta += " (Stay here... Re-choose another train and retry!)"
+        cmnt = "Stay here... Re-choose another train and retry!"
+    if cmnt != "":
+        cmnt = "\nComment> " + cmnt
 
     # 出力
-    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**')
+    await ctx.respond(f'Current Station: {crrsta}, Type: {typ}, Bound for: {bound}, Step: **{i}** ---> Next Stop: **{nxtsta}**'+cmnt)
 
 
 # Bot Run
