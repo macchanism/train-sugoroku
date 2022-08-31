@@ -2,12 +2,27 @@ from secrets import choice
 import discord
 from discord.ext import commands
 from discord.commands import Option
-import random
+import sys
 import config
 import tool
 import railroad
 
+HOLIDAY = False
 WALK = True
+
+# Option
+args = sys.argv
+if len(args) > 2:
+    exit(print("Too many arguments! Exit!"))
+for a in args:
+    if a == "-w" or a == "--walk":
+        WALK = True
+    elif a == "-nw" or a == "--notwalk":
+        WALK = False
+    elif a == "-h" or a == "--holiday":
+        HOLIDAY = True
+    elif a == "-nh" or a == "--notholiday":
+        HOLIDAY = False
 
 # Initial Process
 intents = discord.Intents.default()
@@ -25,7 +40,7 @@ async def change_value(
     if pswd != config.PSWD:
         await ctx.respond(f'**Incorrect PSWD...**')
         return
-    
+
     global WALK
     if newvalue == "True":
         WALK = True
@@ -49,8 +64,11 @@ async def ja(
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.ja.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.ja.next_station(crrsta, typ, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -77,8 +95,11 @@ async def jb(
         await ctx.respond(f'Error! There is not {crrsta} in this line!.')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jb.next_station(crrsta, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jb.next_station(crrsta, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -101,13 +122,18 @@ async def jc(
     typ: Option(str, 'Which type?', choices=railroad.jc.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.jc.bound_list)
 ):
+    global HOLIDAY
+
     # crrsta, line, boundに整合性があるか
-    if not railroad.jc.has_alignment(crrsta, typ):
+    if not railroad.jc.has_alignment(crrsta, typ, HOLIDAY):
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jc.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jc.next_station(crrsta, typ, bound, i, HOLIDAY)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -183,8 +209,11 @@ async def jj(
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jj.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jj.next_station(crrsta, typ, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -207,13 +236,18 @@ async def jk(
     typ: Option(str, 'Which type?', choices=railroad.jk.type_list),
     bound: Option(str, 'Bound for?', choices=railroad.jk.bound_list)
 ):
+    global HOLIDAY
+
     # crrsta, line, boundに整合性があるか
-    if not railroad.jk.has_alignment(crrsta, typ):
+    if not railroad.jk.has_alignment(crrsta, typ, HOLIDAY):
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jk.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jk.next_station(crrsta, typ, bound, i, HOLIDAY)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -240,8 +274,11 @@ async def jl(
         await ctx.respond(f'Error! There is not {crrsta} in this line!.')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jl.next_station(crrsta, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jl.next_station(crrsta, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -268,8 +305,11 @@ async def jo(
         await ctx.respond(f'Error! There is not {crrsta} in this line!.')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jo.next_station(crrsta, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jo.next_station(crrsta, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -297,8 +337,11 @@ async def js(
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.js.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.js.next_station(crrsta, typ, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -326,8 +369,11 @@ async def jt(
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jt.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jt.next_station(crrsta, typ, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -355,8 +401,11 @@ async def ju(
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.ju.next_station(crrsta, typ, bound, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.ju.next_station(crrsta, typ, bound, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
@@ -383,8 +432,11 @@ async def jy(
         await ctx.respond(f'Error! There is not {crrsta} in this line!')
         return
 
+    # サイコロを振る
+    i = tool.Dice(5)
+
     # 出目から結果をサーチ
-    nxtsta = railroad.jy.next_station(crrsta, loop, tool.Dice(5)) # サイコロを振る
+    nxtsta = railroad.jy.next_station(crrsta, loop, i)
     if nxtsta == -1:
         await ctx.respond(f'Error! コマンドの引数を見直すか, GMに連絡してください')
         return
