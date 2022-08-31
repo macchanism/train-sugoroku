@@ -74,3 +74,31 @@ def UTL_JT_JJ_specialrapid_res(crr, b, i):
     elif idx_end < idx_crr:
         return UTL_JT_JJ_specialrapid[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "東海道線(東京-品川)":
+        return (current_station in JT)
+    elif train_type == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(普通)":
+        return (current_station in UTL_JT_JU)
+    elif train_type == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(快速)":
+        return (current_station in UTL_JT_JU_rapid)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        return (current_station in UTL_JT_JJ)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        return (current_station in UTL_JT_JJ_specialrapid)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "東海道線(東京-品川)":
+        ret = JT_res(current_station, train_bound, step)
+    elif train_type == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(普通)":
+        ret = UTL_JT_JU_res(current_station, train_bound, step)
+    elif train_type == "上野東京ライン(宇都宮線・高崎線・東海道線直通)(快速)":
+        ret = UTL_JT_JU_rapid_res(current_station, train_bound, step)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        ret = UTL_JT_JJ_res(current_station, train_bound, step)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        ret = UTL_JT_JJ_specialrapid_res(current_station, train_bound, step)
+    return ret

@@ -4,8 +4,20 @@ JY = ["東京", "神田", "秋葉原", "御徒町", "上野", "鶯谷", "日暮�
 loop_list = ["内回り", "外回り"]
 
 
-def JY_inner_res(crr, i):
-    return JY[(JY.index(crr) + i) % len(JY)]
+def JY_inner_res(crr, step):
+    return JY[(JY.index(crr) + step) % len(JY)]
 
-def JY_outer_res(crr, i):
-    return JY[(JY.index(crr) - i)]
+def JY_outer_res(crr, step):
+    return JY[(JY.index(crr) - step)]
+
+
+def has_alignment(current_station):
+    return (current_station in JY)
+
+def next_station(current_station, loop, step):
+    ret = -1
+    if loop == "内回り":
+        ret = JY_inner_res(current_station, step)
+    elif loop == "外回り":
+        ret = JY_outer_res(current_station, step)
+    return ret

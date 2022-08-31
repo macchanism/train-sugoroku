@@ -22,3 +22,12 @@ def JO_res(crr, b, i):
     elif idx_end < idx_crr:
         return JO[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station):
+    return (current_station in JO)
+
+def next_station(current_station, train_bound, step):
+    ret = -1
+    ret = JO_res(current_station, train_bound, step)
+    return ret

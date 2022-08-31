@@ -56,3 +56,27 @@ def UTL_JJ_specialrapid_res(crr, b, i):
     elif idx_end < idx_crr:
         return UTL_JJ_specialrapid[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "常磐線快速(上野-北千住)(普通・快速)":
+        return (current_station in JJ)
+    elif train_type == "常磐線快速(上野-北千住)(特別快速)":
+        return (current_station in JJ_specialrapid)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        return (current_station in UTL_JJ)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        return (current_station in UTL_JJ_specialrapid)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "常磐線快速(上野-北千住)(普通・快速)":
+        ret = JJ_res(current_station, train_bound, step)
+    elif train_type == "常磐線快速(上野-北千住)(特別快速)":
+        ret = JJ_specialrapid_res(current_station, train_bound, step)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(普通・快速)":
+        ret = UTL_JJ_res(current_station, train_bound, step)
+    elif train_type == "上野東京ライン(常磐線快速・東海道線直通)(特別快速)":
+        ret = UTL_JJ_specialrapid_res(current_station, train_bound, step)
+    return ret

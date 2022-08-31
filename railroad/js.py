@@ -48,3 +48,23 @@ def JS_T_JT_specialrapd_res(crr, b, i):
     elif idx_end < idx_crr:
         return JS_T_JT_specialrapd[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "宇都宮線・横須賀線直通(普通・快速)":
+        return (current_station in JS_U_JO)
+    elif train_type == "高崎線・東海道線直通(普通・快速)":
+        return (current_station in JS_T_JT)
+    elif train_type == "高崎線・東海道線直通(特別快速)":
+        return (current_station in JS_T_JT_specialrapd)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "宇都宮線・横須賀線直通(普通・快速)":
+        ret = JS_U_JO_res(current_station, train_bound, step)
+    elif train_type == "高崎線・東海道線直通(普通・快速)":
+        ret = JS_T_JT_res(current_station, train_bound, step)
+    elif train_type == "高崎線・東海道線直通(特別快速)":
+        ret = JS_T_JT_specialrapd_res(current_station, train_bound, step)
+    return ret

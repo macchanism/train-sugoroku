@@ -28,3 +28,19 @@ def JE_rapid_res(crr, b, i):
         return JE_rapid[max(idx_crr - i, 0)]
 
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "各駅停車":
+        return (current_station in JE)
+    elif train_type == "快速・通勤快速":
+        return (current_station in JE_rapid)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "各駅停車":
+        ret = JE_res(current_station, train_bound, step)
+    elif train_type == "快速・通勤快速":
+        ret = JE_rapid_res(current_station, train_bound, step)
+    return ret

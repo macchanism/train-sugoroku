@@ -22,3 +22,12 @@ def JL_res(crr, b, i):
     elif idx_end < idx_crr:
         return JL[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station):
+    return (current_station in JL)
+
+def next_station(current_station, train_bound, step):
+    ret = -1
+    ret = JL_res(current_station, train_bound, step)
+    return ret

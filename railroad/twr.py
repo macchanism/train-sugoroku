@@ -50,3 +50,23 @@ def TWR_JA_rapid_res(crr, b, i):
     elif idx_end < idx_crr:
         return TWR_JA_rapid[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "りんかい線":
+        return (current_station in TWR)
+    elif train_type == "りんかい線(埼京線直通)(各駅停車)":
+        return (current_station in TWR_JA)
+    elif train_type == "りんかい線(埼京線直通)(快速・通勤快速)":
+        return (current_station in TWR_JA_rapid)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "りんかい線":
+        ret = TWR_res(current_station, train_bound, step)
+    elif train_type == "りんかい線(埼京線直通)(各駅停車)":
+        ret = TWR_JA_res(current_station, train_bound, step)
+    elif train_type == "りんかい線(埼京線直通)(快速・通勤快速)":
+        ret = TWR_JA_rapid_res(current_station, train_bound, step)
+    return ret

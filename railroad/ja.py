@@ -85,3 +85,35 @@ def JA_SO_rapid_res(crr, b, i):
     elif idx_end < idx_crr:
         return JA_SO_rapid[max(idx_crr - i, idx_end)]
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "埼京線(大崎-浮間舟渡)(各駅停車)":
+        return (current_station in JA)
+    elif train_type == "埼京線(大崎-浮間舟渡)(快速・通勤快速)":
+        return (current_station in JA_rapid)
+    elif train_type == "埼京線(りんかい線直通)(各駅停車)":
+        return (current_station in JA_TWR)
+    elif train_type == "埼京線(りんかい線直通)(快速・通勤快速)":
+        return (current_station in JA_TWR_rapid)
+    elif train_type == "埼京線(相鉄線直通)(各駅停車)":
+        return (current_station in JA_SO)
+    elif train_type == "埼京線(相鉄線直通)(快速・通勤快速)":
+        return (current_station in JA_SO_rapid)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "埼京線(大崎-浮間舟渡)(各駅停車)":
+        ret = JA_res(current_station, train_bound, step)
+    elif train_type == "埼京線(大崎-浮間舟渡)(快速・通勤快速)":
+        ret = JA_rapid_res(current_station, train_bound, step)
+    elif train_type == "埼京線(りんかい線直通)(各駅停車)":
+        ret = JA_TWR_res(current_station, train_bound, step)
+    elif train_type == "埼京線(りんかい線直通)(快速・通勤快速)":
+        ret = JA_TWR_rapid_res(current_station, train_bound, step)
+    elif train_type == "埼京線(相鉄線直通)(各駅停車)":
+        ret = JA_SO_res(current_station, train_bound, step)
+    elif train_type == "埼京線(相鉄線直通)(快速・通勤快速)":
+        ret = JA_SO_rapid_res(current_station, train_bound, step)
+    return ret

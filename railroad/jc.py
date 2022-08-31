@@ -42,3 +42,27 @@ def JC_commuterspecialrapid_res(crr, b, i):
     elif b == "東京":
         return JC_commuterspecialrapid[max(idx_crr - i, 0)]
     return crr
+
+
+def has_alignment(current_station, train_type):
+    if train_type == "快速":
+        return (current_station in JC_rapid)
+    elif train_type == "通勤快速":
+        return (current_station in JC_commuterrapid)
+    elif train_type == "特別快速":
+        return (current_station in JC_specialrapid)
+    elif train_type == "通勤特快":
+        return (current_station in JC_commuterspecialrapid)
+    return False
+
+def next_station(current_station, train_type, train_bound, step):
+    ret = -1
+    if train_type == "快速":
+        ret = JC_rapid_res(current_station, train_bound, step)
+    elif train_type == "通勤快速":
+        ret = JC_commuterrapid_res(current_station, train_bound, step)
+    elif train_type == "特別快速":
+        ret = JC_specialrapid_res(current_station, train_bound, step)
+    elif train_type == "通勤特快":
+        ret = JC_commuterspecialrapid_res(current_station, train_bound, step)
+    return ret
