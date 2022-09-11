@@ -19,10 +19,12 @@ for a in args:
         WALK = True
     elif a == "-nw" or a == "--notwalk":
         WALK = False
-    elif a == "-h" or a == "--holiday":
+
+    if a == "-h" or a == "--holiday":
         HOLIDAY = True
     elif a == "-nh" or a == "--notholiday":
         HOLIDAY = False
+
 
 # Initial Process
 intents = discord.Intents.default()
