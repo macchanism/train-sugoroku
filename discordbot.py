@@ -12,7 +12,7 @@ WALK = True
 
 # Option
 args = sys.argv
-if len(args) > 2:
+if len(args) > 3:
     exit(print("Too many arguments! Exit!"))
 for a in args:
     if a == "-w" or a == "--walk":
